@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/{any?}', 'App\Http\Controllers\MainController@index')->where('any', '.*');
+Route::post('/read', 'App\Http\Controllers\MainController@read');
+Route::post('/create', 'App\Http\Controllers\MainController@create');
+Route::post('/update', 'App\Http\Controllers\MainController@update');
+Route::post('/delete', 'App\Http\Controllers\MainController@delete');
+Route::post('/get-options', 'App\Http\Controllers\MainController@getOptions');
