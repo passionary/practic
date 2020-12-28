@@ -1,22 +1,24 @@
 <template>
-    <div>
+    <div class="main">
         <ul id="tabs-swipe-demo" class="tabs">
             <li class="tab col s3"><a @click="changeTab('books')" href="#test-swipe-1">Книги</a></li>
             <li class="tab col s3"><a @click="changeTab('authors')" href="#test-swipe-2">Авторы</a></li>
             <li class="tab col s3"><a @click="changeTab('houses')" href="#test-swipe-3">Издательства</a></li>
         </ul>
-        <div v-for="(table, index) in tables" :id="'test-swipe-' + (index + 1)" class="col s12 light-blue lighten-2">
+        <div v-for="(table, index) in tables" :id="'test-swipe-' + (index + 1)" class="col s12 indigo lighten-4">
             <table>
                 <thead>
                     <tr>
-                        <th v-for="row in header">{{row}}</th>                        
+                        <th v-for="row in header">{{row}}</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(row, index) in data" :key="index">
                         <td v-for="col in Object.values(row)" :key="col.name">{{col}}</td>
-                        <td colspan="2"><a @click.prevent="updateItem(row)" href="">Редактировать</a></td>
-                        <td colspan="2"><a @click.prevent="deleteItem(row)" href="">&times;</a></td>
+                        <td><a class="modal-trigger" @click="updateItem(row)" href="#modal2">Редактировать</a></td>
+                        <td><a @click.prevent="deleteItem(row)" href=""><i class="material-icons">delete</i></a></td>
                     </tr>
                 </tbody>
             </table>
@@ -37,7 +39,19 @@
 </template>
 
 <style>
-
+    * {
+        color: rgb(31, 31, 31);
+    }
+    .main {
+        padding: 7px 25px;
+    }
+    .btn {
+        margin-top: 16px;
+    }
+    .tabs-content {
+        background: rgb(231, 231, 231);
+        height: 850px;
+    }
 </style>
 
 <script>

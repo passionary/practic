@@ -27,7 +27,7 @@ class MainController extends Controller
                 $rows = Book::all();
 
                 foreach($rows as $row) {
-                    $items[] = $this->getBook($row);
+                    $items[] = $this->getItem($row, 'book');
                 }
             break;
             case 'authors':
@@ -62,15 +62,31 @@ class MainController extends Controller
         return response()->json($response);
     }
 
-    public function getBook($row)
+    public function getItem($row, $item)
     {
-        return [
-            'id' => $row->id,
-            'name' => $row->name,
-            'price' => $row->price,
-            'author' => $row->author->name,
-            'house' => $row->house->name
-        ];
+        if($item == 'book') {
+            return [
+                'id' => $row->id,
+                'name' => $row->name,
+                'price' => $row->price,
+                'author' => $row->author->name ?? '',
+                'house' => $row->house->name ?? ''
+            ];   
+        }
+        else if($item == 'author') {
+            return [
+                'id' => $row->id,
+                'name' => $row->name,
+                'contact' => $row->contact,
+                'email' => $row->email,                
+            ];
+        }
+        else if($item == 'house') {
+            return [
+                'id' => $row->id,
+                'name' => $row->name
+            ];
+        }
     }
 
     public function create(Request $request)
@@ -87,6 +103,7 @@ class MainController extends Controller
                 ]);
 
                 $item = [
+                    'id' => $item->id,
                     'name' => $item->name,
                     'author' => $item->author->name ?? '',
                     'house' => $item->house->name ?? ''
@@ -100,6 +117,7 @@ class MainController extends Controller
                 ]);
 
                 $item = [
+                    'id' => $item->id,
                     'name' => $item->name,
                     'contact' => $item->contact,
                     'email' => $item->email ?? ''
@@ -111,6 +129,7 @@ class MainController extends Controller
                 ]);
 
                 $item = [
+                    'id' => $item->id,
                     'name' => $item->name
                 ];
             break;
@@ -126,8 +145,10 @@ class MainController extends Controller
         $table = $request->input('table');
 
         switch($table) {
-            case 'books':                
+            case 'books':
+                $field = 'book';
                 $item = Book::find($request->input('id'));
+
                 foreach($request->all() as $key => $val) {
                     if(in_array($key, ['name', 'price', 'author_id', 'house_id'])) {
                         $item[$key] = $val;
@@ -136,31 +157,33 @@ class MainController extends Controller
                 }
             break;
             case 'authors':
-                $item = Author::create([
-                    'name' => $request->input('name'),
-                    'contact' => $request->input('contact'),
-                    'email' => $request->input('email')
-                ]);
+                $field = 'author';
+                $item = Author::find($request->input('id'));
 
-                $item = [
-                    'name' => $item->name,
-                    'contact' => $item->contact,
-                    'email' => $item->email ?? ''
-                ];
+                foreach($request->all() as $key => $val) {
+                    if(in_array($key, ['name', 'contact', 'email'])) {
+                        $item[$key] = $val;
+                        $item->save();
+                    };
+                }
             break;
             case 'houses':
-                $item = House::create([
-                    'name' => $request->input('name')
-                ]);
+                $field = 'house';
+                $item = House::find($request->input('id'));
 
-                $item = [
-                    'name' => $item->name
-                ];
+                foreach($request->all() as $key => $val) {
+                    if(in_array($key, ['name'])) {
+                        $item[$key] = $val;
+                        $item->save();
+                    };
+                }
+
+                $item = House::find($item->id);
             break;
         }
 
         return response()->json([
-            'item' => $this->getBook(Book::find($item->id))
+            'item' => $this->getItem($item, $field)
         ]);
     }
 

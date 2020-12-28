@@ -1,6 +1,5 @@
 <template>
     <div v-if="table == 'books'">
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Создать</a>
         <div id="modal2" class="modal">
             <div class="modal-content">
                 <form id="form2" @submit="onSubmit">
@@ -24,37 +23,35 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button @click="onSubmit" type="submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Добавить</button>
+                <button @click="onSubmit" type="submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Обновить</button>
             </div>
         </div>
     </div>
     <div v-else-if="table == 'authors'">
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Создать</a>
-        <div id="modal1" class="modal">
+        <div id="modal2" class="modal">
             <div class="modal-content">
-                <form id="form" @submit="onSubmit">
-                    <h4>Новый автор</h4>
+                <form id="form2" @submit="onSubmit">
+                    <h4>Редактирование автора</h4>
                     <input type="text" name="name" v-model="name" placeholder="Введите имя">
                     <input type="text" name="contact" v-model="contact" placeholder="Введите контакты">
                     <input type="text" name="email" v-model="email" placeholder="Введите почту">
                 </form>
             </div>
             <div class="modal-footer">
-                <button @click="onSubmit" type="submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Добавить</button>
+                <button @click="onSubmit" type="submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Обновить</button>
             </div>
         </div>
     </div>
     <div v-else-if="table == 'houses'">
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Создать</a>
-        <div id="modal1" class="modal">
+        <div id="modal2" class="modal">
             <div class="modal-content">
-                <form id="form" @submit="onSubmit">
-                    <h4>Новое издание</h4>
+                <form id="form2" @submit="onSubmit">
+                    <h4>Редактирование издания</h4>
                     <input type="text" name="name" v-model="name" placeholder="Введите название книги">
                 </form>
             </div>
             <div class="modal-footer">
-                <button @click="onSubmit" type="submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Добавить</button>
+                <button @click="onSubmit" type="submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Обновить</button>
             </div>
         </div>
     </div>
@@ -77,7 +74,6 @@ export default {
         if(this.table == 'books') {
             this.name = this.item.name;
             this.price = this.item.price;
-            
 
             axios.post('/get-options')
             .then(res => {
@@ -106,7 +102,6 @@ export default {
             this.contact = '';
         },
         onSubmit() {
-            this.clearState();
             let formData = new FormData(document.querySelector('#form2'));
             formData.append('table', this.table);
             formData.append('id', this.item.id);
@@ -122,22 +117,17 @@ export default {
         }
     },
     mounted() {        
-        setTimeout(() => {
             var elems = document.querySelectorAll('#modal2');
+            console.log(elems);
             var instances = M.Modal.init(elems, {
-                onCloseStart: () => {
-                    var instance = M.Modal.getInstance(document.querySelector('#modal2'));
-                    instance.destroy();
-                }
             });
-            var instance = M.Modal.getInstance(document.querySelector('#modal2'));
-            instance.open();
             this.name = this.item.name;
             this.price = this.item.price;
+            // var instance = M.Modal.getInstance(document.querySelector('#modal2'));
+            // instance.open();
             
             var elems2 = document.querySelectorAll('select');
             var instances2 = M.FormSelect.init(elems2, {});
-        }, 300)
     }
 }
 </script>
