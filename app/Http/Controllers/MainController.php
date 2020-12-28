@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Author;
 use App\Models\House;
+use App\Models\Log;
 
 class MainController extends Controller
 {
@@ -108,6 +109,11 @@ class MainController extends Controller
                     'author' => $item->author->name ?? '',
                     'house' => $item->house->name ?? ''
                 ];
+
+                Log::create([
+                    'table' => 'books',
+                    'action' => 'created'
+                ]);
             break;
             case 'authors':
                 $item = Author::create([
@@ -122,6 +128,11 @@ class MainController extends Controller
                     'contact' => $item->contact,
                     'email' => $item->email ?? ''
                 ];
+
+                Log::create([
+                    'table' => 'authors',
+                    'action' => 'created'
+                ]);
             break;
             case 'houses':
                 $item = House::create([
@@ -132,6 +143,11 @@ class MainController extends Controller
                     'id' => $item->id,
                     'name' => $item->name
                 ];
+
+                Log::create([
+                    'table' => 'houses',
+                    'action' => 'created'
+                ]);
             break;
         }
 
@@ -155,6 +171,13 @@ class MainController extends Controller
                         $item->save();
                     };
                 }
+
+                $item = Book::find($item->id);
+
+                Log::create([
+                    'table' => 'books',
+                    'action' => 'updated'
+                ]);
             break;
             case 'authors':
                 $field = 'author';
@@ -166,6 +189,13 @@ class MainController extends Controller
                         $item->save();
                     };
                 }
+
+                $item = Author::find($item->id);
+
+                Log::create([
+                    'table' => 'authors',
+                    'action' => 'updated'
+                ]);
             break;
             case 'houses':
                 $field = 'house';
@@ -179,6 +209,11 @@ class MainController extends Controller
                 }
 
                 $item = House::find($item->id);
+
+                Log::create([
+                    'table' => 'houses',
+                    'action' => 'updated'
+                ]);
             break;
         }
 
@@ -194,12 +229,27 @@ class MainController extends Controller
         switch($table) {
             case 'books':                
                 Book::where('id', $request->input('id'))->delete();
+
+                Log::create([
+                    'table' => 'books',
+                    'action' => 'deleted'
+                ]);
             break;
             case 'authors':
                 Author::where('id', $request->input('id'))->delete();
+
+                Log::create([
+                    'table' => 'authors',
+                    'action' => 'deleted'
+                ]);
             break;
             case 'houses':
                 House::where('id', $request->input('id'))->delete();
+
+                Log::create([
+                    'table' => 'houses',
+                    'action' => 'deleted'
+                ]);
             break;
         }
 
@@ -236,4 +286,9 @@ class MainController extends Controller
             'houses' => $house_items
         ]);
     }    
+
+    public function logs(Request $request)
+    {
+        return Log::getLogsByTable($request->input('table'));
+    }
 }

@@ -1,6 +1,7 @@
 <template>
     <div v-if="table == 'books'">
         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Создать</a>
+        <a class="waves-effect waves-light btn blue modal-trigger" href="#modal3">Просмотреть логи</a>
         <div id="modal1" class="modal">
             <div class="modal-content">
                 <form id="form" @submit="onSubmit">
@@ -30,6 +31,7 @@
     </div>
     <div v-else-if="table == 'authors'">
         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Создать</a>
+        <a class="waves-effect waves-light btn blue modal-trigger" href="#modal3">Просмотреть логи</a>
         <div id="modal1" class="modal">
             <div class="modal-content">
                 <form id="form" @submit="onSubmit">
@@ -46,6 +48,7 @@
     </div>
     <div v-else-if="table == 'houses'">
         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Создать</a>
+        <a class="waves-effect waves-light btn blue modal-trigger" href="#modal3">Просмотреть логи</a>
         <div id="modal1" class="modal">
             <div class="modal-content">
                 <form id="form" @submit="onSubmit">

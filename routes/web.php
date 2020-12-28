@@ -19,3 +19,4 @@ Route::post('/create', 'App\Http\Controllers\MainController@create');
 Route::post('/update', 'App\Http\Controllers\MainController@update');
 Route::post('/delete', 'App\Http\Controllers\MainController@delete');
 Route::post('/get-options', 'App\Http\Controllers\MainController@getOptions');
+Route::post('/logs', 'App\Http\Controllers\MainController@logs');

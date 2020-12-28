@@ -23,10 +23,18 @@ class Log extends Model
             'deleted' => 'Удаление записи'
         ];
 
+        $table_messages = [
+            'books' => 'Таблица: Книги',
+            'authors' => 'Таблица: Авторы',
+            'houses' => 'Таблица: Издания'
+        ];
+
         $items = [];
 
         foreach($rows as $row) {
             $items[] = [
+                'id' => $row->id,
+                'table' => $table_messages[$table],
                 'action' => $action_messages[$row->action]
             ];
         }

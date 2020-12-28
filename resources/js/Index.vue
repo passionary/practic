@@ -35,6 +35,10 @@
             :key="current && current.id"
             @onUpdateItem="updateItemHandler"
         />
+        <all-logs 
+            :key="table + 'log'"
+            :table="table"
+        />
     </div>
 </template>
 
@@ -58,6 +62,7 @@
     import M from 'materialize-css';
     import Modal from './Modal';
     import EditModal from './EditModal';
+    import AllLogs from './AllLogs';
 
     export default {
         data() {
@@ -71,7 +76,8 @@
         },
         components: {
             Modal,
-            EditModal
+            EditModal,
+            AllLogs
         },
         methods: {
             addItem(item) {
